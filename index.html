@@ -1,0 +1,111 @@
+<!-- 
+*******************************************************
+ * Copyright SAMMI Solutions 2023
+ * 
+ * SAMMI Panel and the following code can not be copied and/or distributed without the express
+ * permission from SAMMI Solutions and is protected under a restrictive, non-permissive
+ * proprietary license. Please see https://docs.google.com/document/d/1RPshxpFFLUzoIswFaHhq7q4Cq4eqXfGfeN4_tGy1OHE for the EULA.
+******************************************************* 
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- https redirect script  -->
+    <script> 
+(function () {
+  if (window.location.protocol === 'https:') {
+    const tries = sessionStorage.getItem('redirectTries') || 0;
+    if (tries > 0) {
+      const message = 'SAMMI Panel must be accessed via HTTP unless SAMMI is running on the same device. Please disable forced HTTP in your browser and try again.';
+      window.alert(message);
+      return;
+    }
+    const confirmMessage = 'SAMMI Panel must be accessed via HTTP unless SAMMI is running on the same device. Click "Ok" to continue with HTTP.';
+    if (confirm(confirmMessage)) {
+      sessionStorage.setItem('redirectTries', tries + 1);
+      window.location.href = window.location.href.replace('https:', 'http:');
+    }
+  } else {
+    sessionStorage.removeItem('redirectTries');
+  }
+}());
+</script>
+  <link rel="stylesheet" type="text/css" href="panel.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+	<title>SAMMI Panel</title>
+  <script src="panel.js"></script>
+
+
+</head>
+<body style="overflow:hidden">
+    <div id="popupAgreement" style="display: none;">
+        <div id="popupAgreementContent">
+          <h2>Agreement</h2>
+            <p>
+                <p>Please read the following agreement before using this website:</p>
+                <p>*******************************************************</p>
+                <p>Copyright SAMMI Solutions 2023 SAMMI Panel and the following code can not be copied and/or distributed without the express permission from SAMMI Solutions and is protected under a restrictive, non-permissive proprietary license. Please see <a id="EULA" onclick="goToAgreementPage()">HERE</a> for the EULA. </p>
+                <p>*******************************************************</p>
+            </p>
+
+          <label><input type="checkbox" id="agreeCheckbox">I Agree</label>
+          <button id="agreeButton" disabled onclick="agreementAgreed()">Continue</button>
+        </div>
+    </div>
+	<div id="welcomeScreen">
+        <div class="inputPair">
+            <label for="panelNicknameInput">Panel Name:</label>
+            <input type="text" id="panelNicknameInput">
+        </div>
+        <div class="inputPair">
+            <label for="ipInput" title="Default: 127.0.0.1">  IP:</label>
+            <input type="text" id="ipInput" value="127.0.0.1" style="width: 105px">
+        </div>
+        <div class="inputPair">
+            <label for="portInput" title="Default: 9470">  Port:</label>
+            <input type="text" id="portInput" value="9470" maxlength="5" style="width: 50px" readonly onclick="warnUserAboutPort()">
+        </div>
+        <div class="break"></div>
+        <div class="break"></div>
+        <div class="inputPair">
+            <label for="passwordInput">Password:</label>
+            <input type="password" id="passwordInput">
+        </div>
+        <div class="break"></div>
+        <div class="inputPair">
+            <label for="autoConnectCheckbox" id="autoConnectLabel">Auto-Connect:</label>
+            <input type="checkbox" id="autoConnectCheckbox" class="checkbox" onclick="autoConnectCheckbox()">   
+        </div>
+        <div class="inputPair">
+            <label for="keepAwakeCheckbox" id="keepAwakeLabel" style="display:none">Keep Awake:</label>
+            <input type="checkbox" id="keepAwakeCheckbox" class="checkbox" style="display:none" onclick="keepAwakeCheckboxClicked()">             
+        </div>
+        <div class="break" style="height:0.5em"></div>
+        <div class="inputPair">	
+            <button id="connectButton" onclick="connectToSammi()">Connect</button>  
+			<button id="disconnectButton" disabled onclick="disconnectUI()">Disconnect</button>
+		</div>
+        <div id="status" >Not Connected</div>
+        <div class="break" style="height: 1em;"></div>
+		<div style="display:flex">
+            <div id="connected-options" style="display: none;" class="inputPair">
+                <select id="deckListSelect" style="padding-right: 10px;"></select>
+                <button id="selectDeckButton" class="welcomeScreenButtons" onclick=" selectDeckButtonClicked()">Select Deck</button>
+            </div>
+		</div>
+		<div style="float: right; margin-right: 10px; margin-top: 5px; display:none;" id = "fullscreenCheckboxDiv">
+			<label for="fullscreenCheckbox">Fullscreen:  </label>
+			<input type="checkbox" class="checkbox" id="fullscreenCheckbox">
+		</div>
+        <div class="break"></div>
+        
+	</div>
+  <div id="deckArea" style="display: none;">
+    <div class="deck" id="deckName"></div>
+    <div class="deck" id="deckBackground"></div>
+    <div class="deck" id="deckButtons"></div>
+  </div>
+</body>
+</html>
