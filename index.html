@@ -14,20 +14,11 @@
     <!-- https redirect script  -->
     <script> 
 (function () {
-  if (window.location.protocol === 'https:') {
-    const tries = sessionStorage.getItem('redirectTries') || 0;
-    if (tries > 0) {
-      const message = 'SAMMI Panel must be accessed via HTTP unless SAMMI is running on the same device. Please disable forced HTTP in your browser and try again.';
-      window.alert(message);
-      return;
-    }
-    const confirmMessage = 'SAMMI Panel must be accessed via HTTP unless SAMMI is running on the same device. Click "Ok" to continue with HTTP.';
-    if (confirm(confirmMessage)) {
-      sessionStorage.setItem('redirectTries', tries + 1);
-      window.location.href = window.location.href.replace('https:', 'http:');
-    }
-  } else {
-    sessionStorage.removeItem('redirectTries');
+  if (
+    window.location.protocol === 'http:' &&
+    window.location.hostname === 'panel.sammi.solutions'
+  ) {
+    window.location.replace(window.location.href.replace(/^http:/, 'https:'));
   }
 }());
 </script>
